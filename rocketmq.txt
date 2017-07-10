@@ -42,3 +42,6 @@
   - 查看nameserver和broker的情况: ./mqadmin clusterList -n 127.0.0.1:9876
 
 9.代码示例
+  获取命令帮助: mqadmin help <command>
+  查看topicList: ./mqadmin topicList -n 127.0.0.1:9876
+
