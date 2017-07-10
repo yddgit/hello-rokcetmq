@@ -1,0 +1,47 @@
+1.常见MQ
+  RocketMQ/RabbitMQ/ActiveMQ/Kafka/ZeroMQ
+
+2.什么是企业消息中间件
+  想象就是一个消息邮局
+  Producer->MQ(存储消息/分发消息/集群/负载均衡)->Consumer
+
+3.应用场合
+  异步/解耦/削峰
+
+4.RocketMQ的两个概念
+  nameserver
+  broker
+  - master
+  - slave(受master管理,持有master消息的复本)
+
+5.最简单的MQ集群:
+  - producer
+  - nameserver
+  - broker(master)
+  - 无broker(slave)
+  - consumer
+
+6.最复杂的MQ集群:
+  - producer集群(持有所有nameserver信息): p1/p2/p3...
+  - nameserver集群(所有borker都将其注册到每台nameserver): ns1/ns2/ns3...
+  - broker(master)集群(producer写): m1/m2/m3...
+  - broker(slave)集群(consumer读): s1/s2/s3...
+  - consumer集群: c1/c2/c3...
+
+7.安装RocketMQ
+  从GitHub下载: https://github.com/apache/incubator-rocketmq/releases
+  解压到/usr/local/apache-rocketmq
+  若bin目录文件无可执行权限则修改: chmod +x /usr/local/apache-rocketmq/bin/*
+
+8.启动NameServer和Broker
+  - 后台运行nameserver: nohup ./mqnamesrv >> /var/log/mqnamesrv.log 2>&1 &
+    如果提示内存不足不能启动则修改runserver.sh中JVM参数
+  - only master模式启动一台broker: nohup ./mqbroker -n "127.0.0.1:9876" -c ../conf/2m-noslave/broker-a.properties >> /var/log/mqbroker.log 2>&1 &
+    如果提示内存不足不能启动则修改runbroker.sh中JVM参数
+  - 查看后台运行的进程: jps
+  - 查看nameserver和broker的情况: ./mqadmin clusterList -n 127.0.0.1:9876
+
+9.代码示例
+  获取命令帮助: mqadmin help <command>
+  查看topicList: ./mqadmin topicList -n 127.0.0.1:9876
+
